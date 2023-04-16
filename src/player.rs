@@ -1,12 +1,15 @@
 use bevy::prelude::*;
 use bevy::window::PrimaryWindow;
 
-const PLAYER_SPEED: f32 = 200.;
+const PLAYER_SPEED: f32 = 200.0;
+const PLAYER_RADIUS: f32 = 32.0;
 
 pub struct PlayerPlugin;
 impl Plugin for PlayerPlugin {
     fn build(&self, app: &mut App) {
-        app.add_startup_system(spawn_player).add_system(move_player);
+        app.add_startup_system(spawn_player)
+            .add_system(move_player)
+            .add_system(confine_player_movement);
     }
 
     fn setup(&self, _app: &mut App) {
@@ -38,7 +41,7 @@ pub fn spawn_player(
             texture: assets.load("sprites/ball_blue_large.png"),
             ..Default::default()
         },
-        Player {},
+        Player,
     ));
 }
 
@@ -68,5 +71,31 @@ fn move_player(
         }
 
         transform.translation += direction * PLAYER_SPEED * time.delta_seconds();
+    }
+}
+
+fn confine_player_movement(
+    mut player_query: Query<&mut Transform, With<Player>>,
+    window_query: Query<&Window, With<PrimaryWindow>>,
+) {
+    let win = window_query.get_single().unwrap();
+    let min_xy = 0.0 + PLAYER_RADIUS;
+    let max_xy = (win.width() - PLAYER_RADIUS, win.height() - PLAYER_RADIUS);
+
+    if let Ok(mut transform) = player_query.get_single_mut() {
+        let mut translation = transform.translation;
+
+        if translation.x < min_xy {
+            translation.x = min_xy;
+        } else if translation.x > max_xy.0 {
+            translation.x = max_xy.0;
+        }
+        if translation.y < min_xy {
+            translation.y = min_xy;
+        } else if translation.y > max_xy.1 {
+            translation.y = max_xy.1;
+        }
+
+        transform.translation = translation;
     }
 }
