@@ -1,0 +1,17 @@
+[package]
+name = "learnig-bevy"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[profile.release]
+opt-level = 3
+
+[profile.dev.package."*"]
+opt-level = 3
+
+[dependencies]
+# cargo run --features bevy/dynamic_linking
+# bevy = { version = "*", features = ["dynamic_linking"] }
+bevy = "0.13"
