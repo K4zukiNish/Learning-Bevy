@@ -19,8 +19,15 @@ fn main() {
             ..Default::default()
         }))
         .add_systems(Startup, (player::spawn_player, spawn_camera))
-        .add_systems(Update, (player::move_player, player::confine_player))
+        .add_systems(
+            Update,
+            (player::move_player, player::confine_player).chain(),
+        )
         .add_systems(Startup, enemy::spawn_enemies)
+        .add_systems(
+            Update,
+            (enemy::move_enemies, enemy::confine_enemies).chain(),
+        )
         .run();
 }
 
