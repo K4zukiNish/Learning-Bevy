@@ -2,7 +2,10 @@
 
 use bevy::{prelude::*, window::WindowResolution};
 
+mod enemy;
 mod player;
+
+const ENEMIES_LIMIT: u8 = 5;
 
 fn main() {
     App::new()
@@ -17,6 +20,7 @@ fn main() {
         }))
         .add_systems(Startup, (player::spawn_player, spawn_camera))
         .add_systems(Update, (player::move_player, player::confine_player))
+        .add_systems(Startup, enemy::spawn_enemies)
         .run();
 }
 

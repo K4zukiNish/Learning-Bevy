@@ -1,8 +1,4 @@
-use bevy::{
-    math::{f32, vec3},
-    prelude::*,
-    window::PrimaryWindow,
-};
+use bevy::{math::f32, prelude::*, window::PrimaryWindow};
 
 use crate::clip;
 
@@ -25,10 +21,9 @@ pub fn spawn_player(mut cmd: Commands, assets: Res<AssetServer>) {
     cmd.spawn((
         Player,
         SpriteBundle {
-            texture: assets.load("sprites/ball_blue_large_alt.png"),
+            texture: assets.load("sprites/ball_blue_small_alt.png"),
             transform: Transform {
                 translation: Vec3::ZERO,
-                scale: vec3(0.5, 0.5, 0.5),
                 ..default()
             },
             ..default()
