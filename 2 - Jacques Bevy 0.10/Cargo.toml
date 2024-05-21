@@ -15,4 +15,4 @@ opt-level = 3
 # cargo run --features bevy/dynamic_linking
 # changed to 0.13, instead of 0.10
 bevy = "0.13"
-rand = "*"
+rand = "0.8.5"

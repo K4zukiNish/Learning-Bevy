@@ -16,7 +16,7 @@ fn main() {
             ..Default::default()
         }))
         .add_systems(Startup, (player::spawn_player, spawn_camera))
-        .add_systems(Update, player::move_player)
+        .add_systems(Update, (player::move_player, player::confine_player))
         .run();
 }
 
@@ -25,4 +25,17 @@ fn spawn_camera(mut cmd: Commands) {
         transform: Transform::from_xyz(0., 0., 0.),
         ..default()
     });
+}
+
+fn clip<T>(value: T, min: T, max: T) -> T
+where
+    T: PartialOrd,
+{
+    if value < min {
+        min
+    } else if value > max {
+        max
+    } else {
+        value
+    }
 }
